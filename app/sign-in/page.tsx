@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight, Boxes, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, Boxes, CheckCircle2, Home } from 'lucide-react'
 
 export default function SignInPage() {
   const [submitted, setSubmitted] = useState(false)
