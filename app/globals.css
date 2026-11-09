@@ -50,6 +50,14 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 body { margin: 0; max-width: 100%; overflow-x: hidden; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
 html[data-theme='light'] { --background: #f6f3ee; --foreground: #102027; }
 html[data-theme='dark'] { --background: #071b26; --foreground: #f7f3ed; }
+
+/* Theme changes apply to the page surfaces, not only typography. */
+html[data-theme='light'] .bg-\[\#071b26\] { background-color: #f6f3ee !important; color: #102027 !important; }
+html[data-theme='light'] .bg-\[\#0b2b39\] { background-color: #d6e8ed !important; color: #102027 !important; }
+html[data-theme='light'] .bg-\[\#102027\] { background-color: #dce9bf !important; color: #102027 !important; }
+html[data-theme='dark'] .bg-\[\#f6f3ed\], html[data-theme='dark'] .bg-\[\#f6f3ee\] { background-color: #071b26 !important; color: #f7f3ed !important; }
+html[data-theme='dark'] .bg-\[\#d6e8ed\] { background-color: #0b2b39 !important; color: #f7f3ed !important; }
+html[data-theme='dark'] .bg-\[\#dce9bf\] { background-color: #102027 !important; color: #f7f3ed !important; }
 button, a, select { -webkit-tap-highlight-color: transparent; }
 button, a { cursor: pointer; }
 ::selection { background: #ff6845; color: #102027; }
