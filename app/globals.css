@@ -46,14 +46,16 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { margin: 0; max-width: 100%; overflow-x: hidden; background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }
+
 button, a, select { -webkit-tap-highlight-color: transparent; }
 button, a { cursor: pointer; }
 ::selection { background: #ff6845; color: #102027; }
 .eyebrow { font-size: .68rem; line-height: 1; text-transform: uppercase; letter-spacing: .22em; color: #536269; }
 
 /* Kinetic system: motion is restrained, purposeful, and fully reduced for accessibility. */
+@keyframes skyppy-ticker-fade { 0%, 100% { opacity: .25; } 18%, 82% { opacity: 1; } }
 @keyframes relay-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes relay-pulse { 0%, 100% { opacity: .45; transform: scale(.92); } 50% { opacity: 1; transform: scale(1); } }
 @keyframes relay-sheen { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
@@ -61,6 +63,7 @@ button, a { cursor: pointer; }
 .metric-reveal { opacity: 0; transform: translateY(12px); transition: opacity .7s ease, transform .7s ease; }
 .metric-reveal[data-visible='true'] { opacity: 1; transform: translateY(0); }
 .relay-marquee { animation: relay-marquee 26s linear infinite; width: max-content; }
+.skyppy-ticker { animation: skyppy-ticker-fade 7s ease-in-out infinite; width: 100%; justify-content: center; text-align: center; }
 .relay-pulse { animation: relay-pulse 2.2s ease-in-out infinite; }
 .relay-sheen { position: relative; overflow: hidden; }
 .relay-sheen::after { content: ''; position: absolute; inset: 0 auto 0 -30%; width: 22%; transform: skewX(-18deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent); animation: relay-sheen 4.8s ease-in-out infinite; pointer-events: none; }
