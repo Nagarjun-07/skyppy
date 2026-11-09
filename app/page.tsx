@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowUpRight, ChevronDown, Clock3, Crosshair, Menu, Package, Radio, Route, ShieldCheck, Sparkles, X, Zap } from 'lucide-react'
 
 const cities = ['Bengaluru', 'Mysuru', 'Chennai', 'Hyderabad', 'Mumbai', 'Pune', 'Delhi', 'Kochi', 'Kolkata']
@@ -42,6 +42,7 @@ export default function Page() {
       </section>
 
       <section className="border-b border-[#102027]/10 bg-[#f6f3ee] px-6 py-10 lg:px-12"><div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-y-8 lg:grid-cols-4"><Metric value="42+" label="cities connected" /><Metric value="1.8M" label="shipments delivered" /><Metric value="99.2%" label="delivery success rate" /><Metric value="24h" label="average express time" /></div></section>
+      <div className="overflow-hidden border-b border-[#102027]/10 bg-[#ff6845] py-3 text-[11px] font-semibold uppercase tracking-[.18em] text-[#102027]" aria-label="Live network activity"><div className="relay-marquee flex gap-10"><span>Live network · Bengaluru → Mumbai · RLY-2048 in transit</span><span className="relay-pulse">●</span><span>Hub 04 clear · 126 routes active</span><span className="relay-pulse">●</span><span>Live network · Bengaluru → Mumbai · RLY-2048 in transit</span><span className="relay-pulse">●</span><span>Hub 04 clear · 126 routes active</span></div></div>
 
       <section id="services" className="mx-auto max-w-[1440px] px-6 py-28 lg:px-12 lg:py-40"><div className="grid gap-16 lg:grid-cols-[.8fr_1.2fr]"><div><p className="eyebrow">The Relay standard</p><h2 className="mt-5 max-w-md text-5xl font-medium leading-[.95] tracking-[-.06em] lg:text-7xl">Logistics with a point of view.</h2><p className="mt-7 max-w-sm text-base leading-relaxed text-[#536269]">We bring the discipline of a global network and the attention of a trusted local partner to every shipment.</p></div><div className="grid gap-4 sm:grid-cols-3">{services.map(({ title, text, icon: Icon, tone }, i) => <article key={title} className={`group rounded-[2rem] p-6 ${tone === 'orange' ? 'bg-[#ff6845] text-[#102027]' : tone === 'blue' ? 'bg-[#d6e8ed]' : 'bg-[#dce9bf]'}`}><div className="flex items-start justify-between"><Icon size={25} strokeWidth={1.6} /><span className="text-xs opacity-50">0{i + 1}</span></div><div className="mt-28"><h3 className="text-xl font-medium">{title}</h3><p className="mt-2 text-sm leading-relaxed opacity-70">{text}</p><ArrowUpRight className="mt-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" size={18} /></div></article>)}</div></div></section>
 
@@ -62,5 +63,30 @@ function BookingCard({ from, to, setFrom, setTo, swapCities }: { from: string; t
   return <div id="book" className="rounded-[1.75rem] bg-[#f7f3ed] p-5 text-[#102027] shadow-2xl shadow-black/20 sm:p-6"><div className="flex items-center justify-between"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-[#536269]">Quick booking</p><p className="mt-1 text-lg font-medium">Move something meaningful.</p></div><span className="grid h-9 w-9 place-items-center rounded-full bg-[#dce9bf]"><Sparkles size={17} /></span></div><div className="mt-6 grid gap-2"><CityInput label="From" value={from} onChange={setFrom} /><button onClick={swapCities} className="absolute ml-[calc(100%-58px)] mt-[52px] grid h-8 w-8 place-items-center rounded-full border border-[#102027]/15 bg-white text-[#ff6845] transition hover:rotate-180" aria-label="Swap cities"><Route size={14} /></button><CityInput label="To" value={to} onChange={setTo} /></div><div className="mt-5 grid grid-cols-2 gap-2"><div className="rounded-xl border border-[#102027]/10 bg-white/60 p-3"><p className="text-[10px] uppercase tracking-wider text-[#536269]">Delivery</p><p className="mt-1 text-sm font-medium">Express · 24h</p></div><div className="rounded-xl border border-[#102027]/10 bg-white/60 p-3"><p className="text-[10px] uppercase tracking-wider text-[#536269]">From</p><p className="mt-1 text-sm font-medium">₹ 899 <span className="text-xs font-normal text-[#536269]">est.</span></p></div></div><button className="mt-4 w-full rounded-full bg-[#ff6845] py-3.5 text-sm font-semibold transition hover:bg-[#f4512e]">Continue booking <ArrowUpRight className="ml-1 inline" size={15} /></button><p className="mt-3 text-center text-[11px] text-[#536269]">No commitment · instant estimate</p></div>
 }
 function CityInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) { return <label className="rounded-xl border border-[#102027]/10 bg-white/60 px-3 py-2.5"><span className="block text-[10px] uppercase tracking-wider text-[#536269]">{label}</span><select value={value} onChange={e => onChange(e.target.value)} className="mt-1 w-full bg-transparent text-sm font-medium outline-none"><option>{value}</option>{cities.filter(c => c !== value).map(c => <option key={c}>{c}</option>)}</select></label> }
-function Metric({ value, label }: { value: string; label: string }) { return <div><p className="text-4xl font-medium tracking-[-.05em] lg:text-5xl">{value}</p><p className="mt-2 text-xs uppercase tracking-[.16em] text-[#536269]">{label}</p></div> }
+function Metric({ value, label }: { value: string; label: string }) {
+  const [visible, setVisible] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const numericValue = Number.parseFloat(value)
+  const suffix = value.replace(/[0-9.]/g, '')
+
+  useEffect(() => {
+    const reveal = window.setTimeout(() => setVisible(true), 180)
+    return () => window.clearTimeout(reveal)
+  }, [])
+
+  useEffect(() => {
+    if (!visible) return
+    let frame = 0
+    const start = performance.now()
+    const animate = (now: number) => {
+      const eased = Math.min((now - start) / 1200, 1)
+      setProgress(1 - Math.pow(1 - eased, 3))
+      if (eased < 1) frame = requestAnimationFrame(animate)
+    }
+    frame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(frame)
+  }, [visible])
+
+  return <div className="metric-reveal" data-visible={visible}><p className="text-4xl font-medium tracking-[-.05em] lg:text-5xl">{Number.isNaN(numericValue) ? value : `${numericValue % 1 ? (numericValue * progress).toFixed(1) : Math.round(numericValue * progress)}${suffix}`}</p><p className="mt-2 text-xs uppercase tracking-[.16em] text-[#536269]">{label}</p></div>
+}
 function TrackPoint({ city, status, done, current }: { city: string; status: string; done?: boolean; current?: boolean }) { return <div className="relative z-10 w-1/3"><div className={`grid h-7 w-7 place-items-center rounded-full border-4 border-[#102027] ${current ? 'bg-[#ff6845]' : done ? 'bg-[#dce9bf]' : 'bg-[#536269]'}`}>{current && <span className="h-2 w-2 animate-ping rounded-full bg-[#102027]" />}</div><p className="mt-4 text-sm font-medium">{city}</p><p className="mt-1 text-xs text-white/40">{status}</p></div> }
