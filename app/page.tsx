@@ -17,14 +17,14 @@ export default function Page() {
   const [from, setFrom] = useState('Bengaluru')
   const [to, setTo] = useState('Mumbai')
   const [faqs, setFaqs] = useState<number[]>([0])
-  const [heroVideo, setHeroVideo] = useState('/skyppy-intro.mp4')
+  const [heroVideo, setHeroVideo] = useState('/skyppy-logistics.mp4')
 
   const swapCities = () => { const current = from; setFrom(to); setTo(current) }
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#f6f3ee] text-[#102027]">
       <section className="relative min-h-[760px] bg-[#071b26] text-white">
-        <video key={heroVideo} className="absolute inset-0 h-full w-full object-cover opacity-80" autoPlay muted playsInline onEnded={() => setHeroVideo(heroVideo === '/skyppy-intro.mp4' ? '/skyppy-logistics.mp4' : '/skyppy-intro.mp4')} aria-label="Skyppy freight journey between Mysore and cities across India"><source src={heroVideo} type="video/mp4" /></video>
+        <video key={heroVideo} className="absolute inset-0 h-full w-full object-cover opacity-95" autoPlay muted playsInline onEnded={() => setHeroVideo(heroVideo === '/skyppy-intro.mp4' ? '/skyppy-logistics.mp4' : '/skyppy-intro.mp4')} aria-label="Skyppy freight journey between Mysore and cities across India"><source src={heroVideo} type="video/mp4" /></video>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#071b26_4%,rgba(7,27,38,.86)_35%,rgba(7,27,38,.2)_78%,#071b26_100%)]" />
         <div className="relative mx-auto max-w-[1440px] px-6 pb-24 pt-6 lg:px-12">
           <nav className="flex items-center justify-between border-b border-white/15 pb-5" aria-label="Main navigation">
