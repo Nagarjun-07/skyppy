@@ -4,6 +4,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+.shipment-pulse { position: absolute; left: 10%; top: 24%; z-index: 4; display: flex; align-items: center; gap: .6rem; animation: route-drift 10s cubic-bezier(.45,0,.55,1) infinite; pointer-events: none; }
+.shipment-pulse__core { width: 13px; height: 13px; border-radius: 999px; background: #ff6845; box-shadow: 0 0 0 8px rgba(255,104,69,.15), 0 0 28px rgba(255,104,69,.9); animation: route-ping 1.8s ease-in-out infinite; }
+.shipment-pulse__label { border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(6,27,37,.78); padding: .45rem .7rem; color: rgba(255,255,255,.72); font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; }
+@keyframes route-drift { 0% { transform: translate(0, 0); } 48% { transform: translate(470px, 190px); } 100% { transform: translate(830px, 65px); } }
+@keyframes route-ping { 0%, 100% { transform: scale(.85); opacity: .7; } 50% { transform: scale(1.15); opacity: 1; } }
+@media (max-width: 700px) { .shipment-pulse { left: 8%; } .shipment-pulse__label { font-size: 8px; } @keyframes route-drift { 0% { transform: translate(0, 0); } 48% { transform: translate(120px, 150px); } 100% { transform: translate(230px, 45px); } } }
+@media (prefers-reduced-motion: reduce) { .shipment-pulse { animation: none; } .shipment-pulse__core { animation: none; } }
+
 :root {
   --background: #f6f3ee;
   --foreground: #102027;
