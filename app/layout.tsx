@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Relay — Every city. One connection.',
+  title: 'Skyppy — Every city. One connection.',
   description: 'Premium intercity logistics for people and businesses moving what matters.',
   generator: 'v0.app',
   icons: {
