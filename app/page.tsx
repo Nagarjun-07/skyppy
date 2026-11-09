@@ -10,6 +10,17 @@ const services = [
   { title: 'E-commerce delivery', text: 'Make the last mile your best mile.', icon: Zap, tone: 'lime' },
 ]
 
+const tickerItems = [
+  '42 cities connected', '1.8M shipments delivered', '99.2% delivery success', '24h express average', '94.8% on-time today',
+  'Hub 04 clear', '126 active routes', 'Bengaluru dispatch live', 'Mumbai handoff complete', 'Mysuru origin hub',
+  'Chennai route ready', 'Delhi express lane open', 'Kochi parcels moving', 'Pune driver assigned', 'Hyderabad scan complete',
+  'Kolkata route coordinated', 'Zero missed handoffs', 'Same-day slots available', 'Live proof of delivery', 'Care at every handoff',
+  'Priority parcels protected', 'First-mile pickup confirmed', 'Last-mile team ready', 'Route ETA updated', 'Fleet check complete',
+  'Customer notified', 'Shipment safely sorted', 'Warehouse capacity clear', 'Delivery window protected', 'Carbon-aware routing',
+  'Verified local partners', 'Secure parcel custody', 'Real-time support online', 'Business lane active', 'Personal courier ready',
+  'E-commerce wave moving', 'Fragile items handled', 'Scheduled pickup open', 'Tracking data refreshed', 'Skyppy network online',
+]
+
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [tracking, setTracking] = useState('')
@@ -21,6 +32,13 @@ export default function Page() {
   const [to, setTo] = useState('Mumbai')
   const [faqs, setFaqs] = useState<number[]>([0])
   const [heroVideo, setHeroVideo] = useState('/skyppy-logistics.mp4')
+  const [tickerStart, setTickerStart] = useState(0)
+  const visibleTickerItems = Array.from({ length: 5 }, (_, index) => tickerItems[(tickerStart + index) % tickerItems.length])
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setTickerStart(current => (current + 5) % tickerItems.length), 4200)
+    return () => window.clearInterval(interval)
+  }, [])
 
   const swapCities = () => { const current = from; setFrom(to); setTo(current) }
 
@@ -46,7 +64,7 @@ export default function Page() {
       </section>
 
       <section className="border-b border-[#102027]/10 bg-[#f6f3ee] px-6 py-10 lg:px-12"><div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-y-8 lg:grid-cols-4"><Metric value="42+" label="cities connected" /><Metric value="1.8M" label="shipments delivered" /><Metric value="99.2%" label="delivery success rate" /><Metric value="24h" label="average express time" /></div></section>
-      <div className="overflow-hidden border-b border-[#102027]/10 bg-[#dce9bf] py-3 text-[11px] font-semibold uppercase tracking-[.18em] text-[#102027]" aria-label="Live network activity"><div className="skyppy-ticker flex gap-10" aria-live="polite"><span>Live network · Bengaluru → Mumbai · SKY-2048 in transit</span><span className="skyppy-pulse">●</span><span>Hub 04 clear · 126 routes active</span><span className="skyppy-pulse">●</span><span>Live network · Bengaluru → Mumbai · SKY-2048 in transit</span><span className="skyppy-pulse">●</span><span>Hub 04 clear · 126 routes active</span></div></div>
+      <div className="overflow-hidden border-b border-[#102027]/10 bg-[#dce9bf] py-3 text-[11px] font-semibold uppercase tracking-[.18em] text-[#102027]" aria-label="Skyppy achievements"><div className="skyppy-ticker flex flex-wrap items-center justify-center gap-x-8 gap-y-1 px-4" aria-live="polite">{visibleTickerItems.map((item, index) => <span key={`${tickerStart}-${index}`} className="inline-flex items-center gap-8"><span>{item}</span>{index < visibleTickerItems.length - 1 && <span className="skyppy-pulse">●</span>}</span>)}</div></div>
 
       <section id="services" className="mx-auto max-w-[1440px] px-6 py-28 lg:px-12 lg:py-40"><div className="grid gap-16 lg:grid-cols-[.8fr_1.2fr]"><div><p className="eyebrow">The Skyppy standard</p><h2 className="mt-5 max-w-md text-5xl font-medium leading-[.95] tracking-[-.06em] lg:text-7xl">Logistics with a point of view.</h2><p className="mt-7 max-w-sm text-base leading-relaxed text-[#536269]">We bring the discipline of a global network and the attention of a trusted local partner to every shipment.</p></div><div className="grid gap-4 sm:grid-cols-3">{services.map(({ title, text, icon: Icon, tone }, i) => <a href={i === 1 ? '/business' : '/services'} key={title} className={`group block min-w-0 overflow-hidden rounded-[2rem] p-6 ${tone === 'orange' ? 'bg-[#ff6845] text-[#102027]' : tone === 'blue' ? 'bg-[#d6e8ed]' : 'bg-[#dce9bf]'}`}><div className="flex items-start justify-between"><Icon size={25} strokeWidth={1.6} /><span className="text-xs opacity-50">0{i + 1}</span></div><div className="mt-28"><h3 className="break-words text-xl font-medium">{title}</h3><p className="mt-2 text-sm leading-relaxed opacity-70">{text}</p><ArrowUpRight className="mt-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" size={18} /></div></a>)}</div></div></section>
 
