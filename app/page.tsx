@@ -23,7 +23,7 @@ export default function Page() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#f6f3ee] text-[#102027]">
       <section className="relative min-h-[760px] bg-[#071b26] text-white">
-        <img src="/relay-hero.png" alt="Skyppy delivery van traveling between cities at night" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <video className="absolute inset-0 h-full w-full object-cover opacity-70" autoPlay muted loop playsInline poster="/relay-hero.png" aria-label="Skyppy freight vehicle traveling between cities"><source src="https://cdn.coverr.co/videos/coverr-a-truck-on-the-road-1575/1080p.mp4" type="video/mp4" /><img src="/relay-hero.png" alt="Skyppy delivery van traveling between cities at night" className="h-full w-full object-cover" /></video>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#071b26_4%,rgba(7,27,38,.86)_35%,rgba(7,27,38,.2)_78%,#071b26_100%)]" />
         <div className="relative mx-auto max-w-[1440px] px-6 pb-24 pt-6 lg:px-12">
           <nav className="flex items-center justify-between border-b border-white/15 pb-5" aria-label="Main navigation">
