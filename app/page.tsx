@@ -31,7 +31,9 @@ export default function Page() {
   const [from, setFrom] = useState('Bengaluru')
   const [to, setTo] = useState('Mumbai')
   const [faqs, setFaqs] = useState<number[]>([0])
-  const [heroVideo, setHeroVideo] = useState('/skyppy-logistics.mp4')
+  const [heroStage, setHeroStage] = useState<0 | 1>(0)
+  const [girlRuns, setGirlRuns] = useState(0)
+  const heroVideoRefs = useRef<Array<HTMLVideoElement | null>>([])
   const [tickerStart, setTickerStart] = useState(0)
   const visibleTickerItems = Array.from({ length: 5 }, (_, index) => tickerItems[(tickerStart + index) % tickerItems.length])
 
@@ -40,12 +42,30 @@ export default function Page() {
     return () => window.clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    const activeVideo = heroVideoRefs.current[heroStage]
+    if (!activeVideo) return
+    activeVideo.currentTime = 0
+    void activeVideo.play()
+  }, [heroStage])
+
+  const advanceHeroVideo = () => {
+    if (heroStage === 0 && girlRuns < 1) {
+      setGirlRuns(1)
+      const girlVideo = heroVideoRefs.current[0]
+      if (girlVideo) { girlVideo.currentTime = 0; void girlVideo.play() }
+      return
+    }
+    setHeroStage(1)
+    setGirlRuns(0)
+  }
+
   const swapCities = () => { const current = from; setFrom(to); setTo(current) }
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#f6f3ee] text-[#102027]">
       <section className="relative min-h-[760px] bg-[#071b26] text-white">
-        <video key={heroVideo} className="absolute inset-0 h-full w-full object-cover opacity-95" autoPlay muted playsInline onEnded={() => setHeroVideo(heroVideo === '/skyppy-intro.mp4' ? '/skyppy-logistics.mp4' : '/skyppy-intro.mp4')} aria-label="Skyppy freight journey between Mysore and cities across India"><source src={heroVideo} type="video/mp4" /></video>
+        <video ref={element => { heroVideoRefs.current[0] = element }} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${heroStage === 0 ? 'opacity-95' : 'pointer-events-none opacity-0'}`} autoPlay muted playsInline preload="auto" onEnded={advanceHeroVideo} aria-label="Girl handing a parcel to a customer"><source src="/skyppy-intro.mp4" type="video/mp4" /></video><video ref={element => { heroVideoRefs.current[1] = element }} className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${heroStage === 1 ? 'opacity-95' : 'pointer-events-none opacity-0'}`} muted playsInline preload="auto" onEnded={() => setHeroStage(0)} aria-label="Skyppy delivery truck in motion"><source src="/skyppy-logistics.mp4" type="video/mp4" /></video>
         <div className="absolute inset-0 bg-[linear-gradient(90deg,#071b26_4%,rgba(7,27,38,.86)_35%,rgba(7,27,38,.2)_78%,#071b26_100%)]" />
         <div className="relative mx-auto max-w-[1440px] px-6 pb-24 pt-6 lg:px-12">
           <nav className="flex items-center justify-between border-b border-white/15 pb-5" aria-label="Main navigation">
